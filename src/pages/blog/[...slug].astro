@@ -1,21 +1,29 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
-import { render } from 'astro:content';
+import { type CollectionEntry, getCollection } from "astro:content";
+import BlogPost from "../../layouts/BlogPost.astro";
+import { db, eq, Likes } from "astro:db";
+import { Like } from "../../components/Like";
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
+	const posts = await getCollection("blog");
 	return posts.map((post) => ({
-		params: { slug: post.id },
+		params: { slug: post.slug },
 		props: post,
 	}));
 }
-type Props = CollectionEntry<'blog'>;
 
+type Props = CollectionEntry<"blog">;
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content } = await post.render();
+
+const initialLikes = await db
+	.select()
+	.from(Likes)
+	.where(eq(Likes.postId, post.id))
+	.get();
 ---
 
 <BlogPost {...post.data}>
+	<Like postId={post.id} initial={initialLikes?.likes ?? 0} client:load />
 	<Content />
 </BlogPost>
