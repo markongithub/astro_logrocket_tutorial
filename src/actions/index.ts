@@ -1,6 +1,5 @@
-// should z come from astro:schema?
-// import { z } from 'astro:schema';
-import { defineAction, z } from "astro:actions";
+import { z } from 'astro:schema';
+import { defineAction } from "astro:actions";
 import { db, Likes, gt, sql } from "astro:db";
 
 export const server = {

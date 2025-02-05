@@ -7,9 +7,10 @@ export function Like({ postId, initial }: { postId: string, initial: number }) {
     return (
         <button
             onClick={async () => {
-                const newLikes = await actions.like({ postId, liked });
+                const newLiked: boolean = !liked;
+                const newLikes = await actions.like.orThrow({ postId, liked: newLiked });
                 setLikes(newLikes);
-                setLiked(!liked)
+                setLiked(newLiked);
             }}
         >
             {likes} ❤️
