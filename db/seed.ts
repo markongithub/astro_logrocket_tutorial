@@ -1,6 +1,8 @@
-import { db } from 'astro:db';
+import { db, Likes } from "astro:db";
 
-// https://astro.build/db/seed
 export default async function seed() {
-	// TODO
+	await db.insert(Likes).values({
+		postId: "first-post.md",
+		likes: 6,
+	});
 }

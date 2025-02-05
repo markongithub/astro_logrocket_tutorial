@@ -1,6 +1,12 @@
-import { defineDb } from 'astro:db';
+import { column, defineDb, defineTable } from "astro:db";
 
-// https://astro.build/db/config
+const Likes = defineTable({
+  columns: {
+    postId: column.text({ primaryKey: true }),
+    likes: column.number(),
+  },
+});
+
 export default defineDb({
-  tables: {}
+  tables: { Likes },
 });
